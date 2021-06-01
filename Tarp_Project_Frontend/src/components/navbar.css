@@ -1,0 +1,14 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.specialitem {
+  position: relative;
+  left: 750px;
+}
+
+.notsospecialitem {
+  position: relative;
+  top: 5px;
+}

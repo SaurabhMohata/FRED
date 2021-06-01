@@ -1,0 +1,13 @@
+.light:hover {
+  background-color: #777;
+}
+
+/* .light {
+  text-align: center;
+} */
+
+.card {
+  text-align: center;
+  display: inline-block;
+  width: 19%;
+}
