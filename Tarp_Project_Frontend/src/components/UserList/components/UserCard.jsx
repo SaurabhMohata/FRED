@@ -1,11 +1,21 @@
 import React from "react";
+import { useHistory } from 'react-router-dom';
 import Avatar from "./Avatar";
 import "./UserCard.css";
 
 function UserCard(user) {
-  function navigate() {
-    // redirect to user.profileURL
-    window.location.href = user.profileURL;
+  let history = useHistory()
+
+  // function navigate() {
+  //   // redirect to user.profileURL
+  //   window.location.href = user.profileURL;
+  // }
+
+  const navigate = () =>{
+    history.push({
+      pathname:`/user/${user.id}`,
+      state:{userData:user.completeUser,authKey:user.authKey}
+    })
   }
 
   return (

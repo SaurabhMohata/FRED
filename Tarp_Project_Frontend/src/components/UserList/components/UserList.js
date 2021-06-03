@@ -38,7 +38,9 @@ function UserList() {
         {data && data.length > 0 && data.map((user)=>{
           return (
             <UserCard
-              key={user._id}
+              completeUser = {user}
+              authKey = {userDetails.Data[0].accessToken}
+              id={user._id}
               img={"https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk_400x400.jpg" }
               name={user.fullName}
               reputation={user.reputation}

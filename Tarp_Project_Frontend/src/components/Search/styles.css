@@ -185,5 +185,6 @@ h3 {
 
 .loading {
   position: absolute;
-  left: 700px;
+  left: 650px;
+  top: 100px;
 }

@@ -12,6 +12,7 @@ import Thanks from './components/pages/thanks';
 import Search from './components/Search/components/Search';
 import UserList from './components/UserList/components/UserList';
 import Profile from './components/Profile/components/Profile';
+import OtherUserProfile from './components/Profile/components/OtherUserProfile'
 import SignUpHelper from './components/pages/SignUpHelper';
 import SignInHelper from './components/pages/SignInHelper';
 import {UserContext} from './userContext';
@@ -37,8 +38,10 @@ function App() {
             <Route path='/recommend' component = {Recommend} />
             <Route path='/search' component = {Search} />
             <Route path='/userlist' component = {UserList} />
-            <Route path='/profile'  component = {Profile} />
+            <Route path='/profile/'  component = {Profile} />
             <Route path='/sign-in' component = {SignIn} />
+            <Route path='/user/:id' component={OtherUserProfile} />
+          
             <Route path='/' exact component={SignIn} />
             {/* <Route path='/user/:id' component={} /> */}
           </UserContext.Provider>
