@@ -1,43 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles.css";
+import {API} from '../../../ApiSchema';
+import {UserContext} from '../../../userContext';
+// import content from "../../../../../Tarp_Project_Backend/models/content";
 
 function Description(course) {
   let initialUpvotes = course.upvotes;
   let initialReputation = course.reputation;
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [courseReputation, setCourseReputation] = useState(initialReputation);
+  const {userDetails,setUserDetail}= useContext(UserContext);
 
-  let userReputation = 20;
-
-  function increase(event) {
-    // first make an api call and check if the user has already voted
-    // if he has do nothing
-    // else increase the count in api and call this function
-    setUpvotes(upvotes + 1);
+  const handleVote = async(vote,contentId) =>{
+    console.log(vote,contentId);
+    const obj = {
+      vote,
+      contentId
+    }
+    const contentVote = await API('contentVote/','POST',obj,userDetails.Data[0].accessToken)
+    course.setRefetch_(!course.refetch_)
   }
-
-  function decrease(event) {
-    // first make an api call and check if the user has already voted
-    // if he has do nothing
-    // else decrease the count in api and call this function
-    setUpvotes(upvotes - 1);
-  }
-
+  
   function navigate() {
     window.location.href = course.courseURL;
   }
 
-  function recommend() {
-    // make an api call if not already recommended increase the course value
-    // by user's reputation
-    // console.log(courseReputation);
-    console.log(
-      "courseReputation: " +
-        courseReputation +
-        " userReputation: " +
-        userReputation
-    );
-    setCourseReputation(courseReputation + userReputation);
+
+  const recommend = async(e) =>{
+      const contentId = e.target.value;
+      const obj = {
+        contentId      
+      }
+
+      // console.log("content id description: ", contentId);
+      // console.log("access token description: ", userDetails.Data[0].accessToken);
+      
+      const response = await API('reputationCount/','POST',obj,userDetails.Data[0].accessToken);
+      course.setRefetch_(!course.refetch_)
   }
 
   return (
@@ -46,7 +45,7 @@ function Description(course) {
       <strong className="d-inline-block mb-2 text-primary">
         {course.category}
       </strong>
-      {course.status === 0 && (
+      {!course.status && (
         <strong className="status d-inline-block mb-2 text-danger">
           Not Approved
         </strong>
@@ -57,25 +56,25 @@ function Description(course) {
       <div className="mb-1 text-muted">{course.date}</div>
       <p className="card-text mb-1">{course.desc}</p>
       <div className="container-fluid">
-        {course.status === 0 && (
-          <button className="btn btn-outline-primary mt-2" onClick={recommend}>
+        {!course.status && (
+          <button className="btn btn-outline-primary mt-2" onClick={recommend} value = {course.id}>
             Recommend this!
           </button>
         )}
-        {course.status === 1 && (
-          <button className="submit-with-icon" onClick={increase}>
+        {course.status && (
+          <button className="submit-with-icon" onClick={()=>handleVote('upvote',course.id)} value = {course.id}>
             <i className="icon1 fas fa-arrow-up"></i>
           </button>
         )}
         &nbsp;
-        {course.status === 1 && (
-          <button className="submit-with-icon" onClick={decrease}>
+        {course.status && (
+          <button className="submit-with-icon" onClick={()=>handleVote('downvote',course.id)} value = {course.id}>
             <i className="icon2 fas fa-arrow-down"></i>
           </button>
         )}
         &nbsp; &nbsp;
-        {course.status === 1 && (
-          <span className="text-muted">{upvotes} upvotes</span>
+        {course.status && (
+          <span className="text-muted">{course.upvotes} upvotes</span>
         )}
       </div>
     </div>

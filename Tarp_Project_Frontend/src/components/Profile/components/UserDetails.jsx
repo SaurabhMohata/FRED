@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserDetails.css";
 import "../styles.css";
+import {API} from "../../../ApiSchema";
 
 function UserDetails(user) {
-  const [reputation, setReputation] = useState(user.reputation);
+  console.log("Inside Userdetails: ", user)
+  const [reputation, setReputation] = useState(0);
+  const auth = user.authKey;
+  const userId = user.id;
 
-  function increaseReputation() {
-    // make an api call
-    // if the user has already upvoted => don't increase
-    // else increase the value in database and call this function
-    setReputation(reputation + 1);
+  const increaseReputation = async() => {
+    const obj = {
+      userId
+    }
+    console.log(obj);
+    console.log("key value in API call: ", auth);
+    const serverResponse =  await API('userUpvote/','POST',obj, auth);
+    if(serverResponse.Data === 1) setReputation(reputation  + 1);
   }
 
   return (

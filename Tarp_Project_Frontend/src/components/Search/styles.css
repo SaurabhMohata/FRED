@@ -70,8 +70,8 @@
   width: 20%;
   /* background-color: #00cec4; */
   margin-right: 30px;
-  position: relative;
-  bottom: 347px;
+  position: absolute;
+  top: 266px;
 }
 
 .sidepanel {
@@ -81,6 +81,8 @@
 .courses {
   display: inline-block;
   width: 75%;
+  position: absolute;
+  left:325px
 }
 
 .container {
@@ -179,4 +181,9 @@ h3 {
 
 .link:hover {
   color: #0d6efd;
+}
+
+.loading {
+  position: absolute;
+  left: 700px;
 }

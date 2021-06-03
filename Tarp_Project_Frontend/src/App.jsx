@@ -1,6 +1,6 @@
 import React ,{useState,useMemo }from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Navbar from './components/navbar';
 import Services from './components/pages/Services';
@@ -14,7 +14,7 @@ import UserList from './components/UserList/components/UserList';
 import Profile from './components/Profile/components/Profile';
 import SignUpHelper from './components/pages/SignUpHelper';
 import SignInHelper from './components/pages/SignInHelper';
-import {UserContext} from './userContext'
+import {UserContext} from './userContext';
 
 function App() {
   console.log("helloo baby ");

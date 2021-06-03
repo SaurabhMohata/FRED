@@ -20,6 +20,6 @@ export const API = async(url,method,obj = {},accessToken=null) =>{
       body:JSON.stringify(obj)
     })
     const data = await res.json();
-    console.log("data = ",data);
+    console.log("data recieved from server = ",data);
     return data;
   }

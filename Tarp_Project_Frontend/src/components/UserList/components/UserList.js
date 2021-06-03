@@ -1,6 +1,5 @@
 import React , {useState,useEffect,useContext} from "react";
 import UserCard from "./UserCard";
-import users from "./Users";
 import SearchBar from "./SearchBar";
 import {API} from '../../../ApiSchema'
 import {UserContext} from '../../../userContext';
@@ -8,7 +7,7 @@ import { Dots } from "react-activity";
 
 
 function UserList() {
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [token,setToken] = useState(null);
   const [data,setData] = useState(null)
   const {userDetails,setUserDetail }= useContext(UserContext);

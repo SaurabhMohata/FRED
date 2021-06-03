@@ -3,8 +3,11 @@ import UserDetails from "./UserDetails";
 import "../styles.css";
 
 function UserProfile(user) {
+  console.log("object recieved in user profile", user);
+
   return (
     <UserDetails
+      id = {user.id}
       email={user.email}
       name={user.name}
       dateJoined={user.dateJoined}
@@ -14,6 +17,7 @@ function UserProfile(user) {
       github={user.github}
       stackoverflow={user.stackoverflow}
       imgURL={user.imgURL}
+      authKey = {user.authKey}
     />
   );
 }

@@ -20,7 +20,7 @@ const API = async(url,method,obj = {}) =>{
 
 function SignIn(props) {
   const {userDetails,setUserDetail }= useContext(UserContext);
-  console.log("hello baby again" , userDetails);
+  // console.log("hello baby again" , userDetails);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState();

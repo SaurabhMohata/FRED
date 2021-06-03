@@ -5,6 +5,8 @@ var contentSchema = require("../models/content");
 var tagSchema = require("../models/tags");
 var voteSchema = require("../models/votes");
 var suggestionSchema = require("../models/suggestion");
+var upvoteSchema = require("../models/upvote");
+var countSchema = require("../models/counts");
 
 exports.signupRequest = async function (req, res, next) {
     try {
@@ -105,16 +107,19 @@ exports.userProfile = async function (req, res, next) {
 
 exports.suggestion = async function (req, res, next) {
     try {
+        // console.log(req.body);
         var userData = await userLoginSchema.find({ _id: req.token.id });
         if (userData.length == 1) {
             if (req.body != null) {
-                const { title, link, description, type, tags, language } = req.body;
+                const { title, link, description, type, tags, language, category, courseDate } = req.body;
                 var newContent = new contentSchema({
                     title: title,
                     link: link,
                     description: description,
                     type: type.toLowerCase(),
-                    language: language.toLowerCase()
+                    language: language.toLowerCase(),
+                    category: category,
+                    courseDate: courseDate
                 });
                 await newContent.save();
 
@@ -175,6 +180,7 @@ exports.suggestion = async function (req, res, next) {
 // bydefault type and language will be null and status will be true from front end.. else all must be in lowercase from frontend (user input could be anything)
 exports.contentListing = async function (req, res, next) {
     try {
+        console.log(req.body);
         var userData = await userLoginSchema.find({ _id: req.token.id });
         if (userData.length == 1) {
             if (req.body != null) {
@@ -190,6 +196,10 @@ exports.contentListing = async function (req, res, next) {
                             contents.push(tmp[0]);
                         }
                     }
+                    if(data.length==0)
+                    {
+                        contents = await contentSchema.find({status: req.body.status, language: req.body.language, type: req.body.type});
+                    }
                 }
                 else if (req.body.language) {
                     for (i = 0; i < data.length; i++) {
@@ -197,6 +207,10 @@ exports.contentListing = async function (req, res, next) {
                         if (tmp.length == 1) {
                             contents.push(tmp[0]);
                         }
+                    }
+                    if(data.length==0)
+                    {
+                        contents = await contentSchema.find({status: req.body.status, language: req.body.language});
                     }
                 }
                 else if (req.body.type) {
@@ -208,6 +222,10 @@ exports.contentListing = async function (req, res, next) {
                             contents.push(tmp[0]);
                         }
                     }
+                    if(data.length==0)
+                    {
+                        contents = await contentSchema.find({status: req.body.status, type: req.body.type});
+                    }
                 }
                 else {
                     for (i = 0; i < data.length; i++) {
@@ -216,7 +234,30 @@ exports.contentListing = async function (req, res, next) {
                             contents.push(tmp[0]);
                         }
                     }
+                    if(data.length==0)
+                    {
+                        contents = await contentSchema.find({status: req.body.status});
+                    }
                 }
+
+                function GetSortOrder(prop1, prop2) {    
+                    return function(a, b) {    
+                        if(a[prop2]==0)
+                        {
+                            a[prop2]=1;
+                        }
+                        if(b[prop2]==0)
+                        {
+                            b[prop2]=1;
+                        }
+                        if (a[prop1]/a[prop2] > b[prop1]/b[prop2]) {    
+                            return 1;    
+                        }
+                        return 0;    
+                    }    
+                }
+                contents.sort(GetSortOrder("upvotes","downvotes"));
+
 
                 res.status(200).json({
                     Message: "Data Sent",
@@ -387,15 +428,36 @@ exports.userUpvote = async function (req, res, next) {
             const { userId } = req.body;
             var user = await userLoginSchema.find({ _id: userId });
             let reputation = user[0].reputation;
-            let updateVal = await userLoginSchema.findByIdAndUpdate(userId, {
-                reputation: reputation + 1
-            }, { new: true });
+            var temp = await upvoteSchema.find({userId: userId, mainUserId: req.token.id });
+            if(temp.length == 0)
+            {
+                let updateVal = await userLoginSchema.findByIdAndUpdate(userId, {
+                    reputation: reputation + 1
+                }, { new: true });
 
-            res.status(200).json({
-                Message: "Upvote succesfull!",
-                Data: 1,
-                IsSuccess: true
-            });
+                var newTemp = new upvoteSchema({
+                    mainUserId: req.token.id,
+                    userId: userId
+                });
+                await newTemp.save();
+
+                res.status(200).json({
+                    Message: "Upvote succesfull!",
+                    Data: 1,
+                    IsSuccess: true
+                });
+
+            }
+            else
+            {
+                res.status(200).json({
+                    Message: "You have already given your upvote!",
+                    Data: 0,
+                    IsSuccess: true
+                });
+            }
+
+            
         }
         else {
             res.status(400).json({
@@ -416,6 +478,8 @@ exports.userUpvote = async function (req, res, next) {
 
 exports.reputationCount = async function (req, res, next) {
     try {
+        console.log(req.body);
+        console.log(req.token);
         var userData = await userLoginSchema.find({ _id: req.token.id });
         if (userData.length == 1) {
             if (req.body != null) {
@@ -431,11 +495,20 @@ exports.reputationCount = async function (req, res, next) {
                     }, { new: true });
                 }
                 else {
-                    // console.log(reputationCount);
+                    var temp = await countSchema.find({contentId: contentId, userId: req.token.id });
+                    if(temp.length == 0)
+                    {
+                        let updateVal = await contentSchema.findByIdAndUpdate(contentId, {
+                            reputationCount: reputationCount + Math.min(userData[0].reputation,500)
+                        }, { new: true });
 
-                    let updateVal = await contentSchema.findByIdAndUpdate(contentId, {
-                        reputationCount: reputationCount + userData[0].reputation
-                    }, { new: true });
+                        var newTemp = new countSchema({
+                            contentId: contentId,
+                            userId: req.token.id
+                        });
+                        await newTemp.save();
+                    }
+                    
 
                     var data = await contentSchema.find({ _id: contentId });
                     if (data[0].reputationCount >= 5000) {

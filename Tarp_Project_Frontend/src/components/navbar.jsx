@@ -1,22 +1,32 @@
-import React ,{useEffect,useRef} from "react";
+import React ,{useEffect} from "react";
 // import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import "./navbar.css";
 
 function Navbar(props) {
-  const RouteRef = useRef(null)
   let history = useHistory();
-  console.log("getting props  = ",props.userDetails);
+
+  console.log("getting props in navbar = ",props.userDetails);
   useEffect(()=>{
-    console.log("Inside useEffect of profile = ",props.userDetails);
+    console.log("Inside useEffect of navbar = ",props.userDetails);
   },[props])
 
 
 const RedirectToProfile = ()=>{
-  console.log("helooo here");
+  console.log("Inside Navbar :: profile clicked");
+  console.log(props.userDetails);
    history.push({
     pathname:'/profile',
+    state:{userData:props.userDetails}
+  });
+}
+
+const RedirectToRecommend = ()=>{
+  console.log("Inside Navbar :: recommend clicked");
+  console.log(props.userDetails);
+   history.push({
+    pathname:'/recommend',
     state:{userData:props.userDetails}
   });
 }
@@ -52,7 +62,7 @@ const changeRoute = (route)=>{
             </div>
           </li>
           <li class="notsospecialitem nav-item">
-            <div class="nav-link"  onClick={()=>changeRoute('/recommend')}>
+            <div class="nav-link"  onClick={RedirectToRecommend}>
               Recommend
             </div>
           </li>
@@ -70,9 +80,9 @@ const changeRoute = (route)=>{
                   <i className="fas fa-user"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a onClick={RedirectToProfile} class="dropdown-item"  >
+                  <div onClick={RedirectToProfile} class="dropdown-item"  >
                     ViewProfile
-                  </a>
+                  </div>
                   <a class="dropdown-item" href="./sign-in">
                     Logout
                   </a>

@@ -32,13 +32,17 @@ var contents = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    // admin_approval:{
-    //     type: Boolean,
-    //     default:false
-    // },
     language:{
         type: String,
         required: true
+    },
+    category:{
+        type: String,
+        default: null
+    },
+    courseDate:{
+        type: String,
+        default: null
     }
 });
 

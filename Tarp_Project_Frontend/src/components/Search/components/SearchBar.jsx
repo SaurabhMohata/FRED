@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles.css";
 
-function SearchBar() {
+function SearchBar(props) {
   const [query, setQuery] = useState("");
 
   function handleEvent(event) {
@@ -12,7 +12,10 @@ function SearchBar() {
   function search() {
     // make an api call and fetch the search results
     // render them
-    alert(query);
+
+    // alert(query);
+    props.setTag(query)
+
   }
 
   return (
