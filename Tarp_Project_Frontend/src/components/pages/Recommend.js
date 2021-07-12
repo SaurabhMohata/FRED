@@ -78,6 +78,7 @@ function Recommend(props) {
       console.log(obj);
   
       const serverResponse =  await API('suggestion/','POST',obj, key);
+      alert("Thanks for adding this course");
     }
 
     return (

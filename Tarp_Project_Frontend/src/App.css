@@ -93,3 +93,9 @@ border-radius: 0;
 padding-top: 0px;
 margin-top: 0px;
 }
+
+.niche {
+  position: absolute;
+  top: 150px;
+  left: 20px;
+}

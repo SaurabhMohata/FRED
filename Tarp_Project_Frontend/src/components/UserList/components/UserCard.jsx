@@ -22,7 +22,7 @@ function UserCard(user) {
     <div className="light card col-md-12 mb-5 me-2">
       <div className="row g-0 overflow-hidden flex-md-row h-md-250 position-relative">
         <div onClick={navigate} className="col p-4 flex-column position-static">
-          <Avatar img={user.img} />
+          <Avatar img={user.profileURL} />
           <h3 className="mb-0">{user.name}</h3>
           <div className="mb-1 text-dark">
             Reputation: <span class="text-danger">{user.reputation}</span>

@@ -2,19 +2,17 @@ import React ,{useState} from 'react';
 import Footer from '../Footer.jsx';
 import { Link } from 'react-router-dom';
 import '../../App.css';
+/**
+ *   
+ formData.append('fullName',obj.fullName)
+  formData.append('email',obj.email)
+  formData.append('password',obj.password)
+  formData.append('selfDescription',obj.selfDescription)
+  formData.append('github',obj.github)
+  formData.append('linkedin',obj.linkedin)
+  formData.append('stackoverflow',obj.stackoverflow)
+ */
 
-const API = async(url,method,obj = {}) =>{
-  const res = await fetch('http://localhost:9000/webApi/'+ url,{
-    method:method,
-    headers: {
-      'Content-Type': 'application/json'
-     },
-    body:JSON.stringify(obj)
-  })
-  const data = await res.json();
-  console.log("data = ",data);
-  return data;
-}
 
 function SignUp() {
  
@@ -58,9 +56,52 @@ function SignUp() {
   }
 
   function handleAvatar(e){
-    setAvatar(e.target.value);
+    // console.log("avtart value = ",e.target.value);
+    setAvatar(e.target.files[0]);
   }
 
+
+  const API = async(url,method,obj = {}) =>{
+    let formData = new FormData()
+    // console.log("fhjsagjgstrhklkho;y = ",obj.avatar,obj.avatar.name)
+    formData.append('fullName',obj.fullName)
+    formData.append('email',obj.email)
+    formData.append('password',obj.password)
+    formData.append('selfDescription',obj.selfDescription)
+    formData.append('github',obj.github)
+    formData.append('linkedin',obj.linkedin)
+    formData.append('stackoverflow',obj.stackoverflow)
+    formData.append('avatar',obj.avatar,obj.avatar.name)
+    // for(const key in obj){
+    //   // console.log(key);
+    //   if(key === 'avatar'){
+    //     if(avatar!=null){
+    //       formData.append(`${key}`,obj[key],obj[key].name)
+    //     }
+    //   }else{
+    //     formData.append(`${key}`,obj[key])
+    //   }
+    // }
+
+    // for (var key of formData.entries()) {
+    //   console.log(key[0] + ', ' + key[1]);
+    // }
+
+    const res = await fetch('http://localhost:9000/webApi/'+ url,{
+      method:method,
+      // headers: {
+      //   // 'Content-Type': 'application/x-www-form-urlencoded',
+      //   // 'Accept':'application/json'
+      //   // 'Process'
+      //  },
+      redirect: 'follow',
+      // body:JSON.stringify(obj)
+      body:formData
+    })
+    const data = await res.json();
+    console.log("data = ",data);
+    return data;
+  }
 
   const handleEvent = async() => {
     // call api, if the user valid set status = 1 and redirect to home
@@ -72,7 +113,9 @@ function SignUp() {
       selfDescription,
       github,
       linkedin,
-      stackoverflow
+      stackoverflow,
+      avatar
+
     }
     console.log(obj);
     // const res = await fetch('http://localhost:9000/webApi/signin/',{
@@ -86,13 +129,14 @@ function SignUp() {
     // console.log("data = ",data);
 
     const randomdata =  await API('signup/','POST',obj);
+    alert("Congrats, you have successfully signed up!")
     console.log("random data = ",randomdata);
     // setStatus(1);
   }
 
   return (
   <div>
-  <form className="form-signin" action="/signup" method="post" encType="multipart/form-data">
+  <form className="form-signin">
     <h1 className="h4 mb-3 font-weight-normal">Create an Account</h1>
     <input onChange = {handleFullName} type="text" className="form-control top" placeholder="Username" id="fullName" name="fullName" value =  {fullName} required autoFocus/>
     <input onChange = {handleEmail} type="email" className="form-control middle" placeholder="Email" id="email" name="email" value = {email} required />
@@ -101,7 +145,7 @@ function SignUp() {
     <input onChange = {handleGithub} value = {github} type="text" className="form-control middle" placeholder="Github Account" id="github" name="github"/>
     <input onChange = {handleLinkedin} value = {linkedin} type="text" className="form-control middle" placeholder="Linkedin Account" id="linkedin" name="linkedin"/>
     <input onChange = {handleStackoverflow} value = {stackoverflow} type="text" className="form-control bottom" placeholder="Stackoverflow Account" id="stackoverflow" name="stackoverflow"/>
-    <input onChange = {handleAvatar} value = {avatar} type="file" name = "avatar"/>
+    <input onChange = {handleAvatar} type="file" />
     <Link onClick = {handleEvent} className="btn btn-group btn-lg btn-dark btn-block" type="submit">Continue</Link>
     <small id="signInHelpBlock" className="form-text text-muted">
     <Link to="/sign-in">Already have an account?</Link>

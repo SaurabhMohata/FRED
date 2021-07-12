@@ -9,6 +9,9 @@ var upvoteSchema = require("../models/upvote");
 var countSchema = require("../models/counts");
 
 exports.signupRequest = async function (req, res, next) {
+    console.log("overe here");
+    console.log("body = ",req.body)
+    // console.log("file = ",req.files['avatar'])
     try {
         var newUser = new userLoginSchema({
             fullName: req.body.fullName,
@@ -18,7 +21,7 @@ exports.signupRequest = async function (req, res, next) {
             github: req.body.github,
             linkedin: req.body.linkedin,
             stackoverflow: req.body.stackoverflow,
-            profileImg: req.file != null ? req.files['avatar'][0].path : null
+            profileImg: req.files != null ? req.files['avatar'][0].path : null
         });
         await newUser.save();
         res.status(200).json({

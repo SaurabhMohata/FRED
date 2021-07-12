@@ -24,7 +24,7 @@ function OtherUserProfile(props) {
       github={users.github ? users.github : "NA"}
       stackoverflow={users.stackoverflow ? users.stackoverflow : "NA"}
       authKey = {keyvar ? keyvar : "NA"}
-      imgURL={users.imgURL ? users.imgURL : "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"}
+      imgURL={users.profileImg ? "/images/" + users.profileImg.substring(15) : "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"}
     />
   );
 }

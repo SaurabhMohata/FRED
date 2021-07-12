@@ -41,7 +41,6 @@ function App() {
             <Route path='/profile/'  component = {Profile} />
             <Route path='/sign-in' component = {SignIn} />
             <Route path='/user/:id' component={OtherUserProfile} />
-          
             <Route path='/' exact component={SignIn} />
             {/* <Route path='/user/:id' component={} /> */}
           </UserContext.Provider>

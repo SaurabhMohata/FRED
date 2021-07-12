@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./UserDetails.css";
 import "../styles.css";
 import {API} from "../../../ApiSchema";
+// let imageName = require("../../../images");
 
 function UserDetails(user) {
   console.log("Inside Userdetails: ", user)
@@ -19,6 +20,7 @@ function UserDetails(user) {
     if(serverResponse.Data === 1) setReputation(reputation  + 1);
   }
 
+
   return (
     <div className="box mt-5 mb-5">
       <div className="col px-2 py-2">
@@ -29,6 +31,7 @@ function UserDetails(user) {
                 <div className="px-3 pt-2 pb-5 mb-1 cover">
                   <div className="row media align-items-end profile-head">
                     <div className="col-3 profile display picture">
+                      
                       <img
                         src={user.imgURL}
                         alt="..."

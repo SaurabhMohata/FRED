@@ -33,8 +33,8 @@ function UserList() {
   if(loading === true) return <Dots />;
   else{
     return (
-      <div>
-        <SearchBar />
+      <div className = "niche">
+        {/* <SearchBar /> */}
         {data && data.length > 0 && data.map((user)=>{
           return (
             <UserCard
@@ -44,7 +44,7 @@ function UserList() {
               img={"https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk_400x400.jpg" }
               name={user.fullName}
               reputation={user.reputation}
-              profileURL={user.profileImg ? user.profileImg :"https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk_400x400.jpg"}
+              profileURL={ user.profileImg ? "/images/" + user.profileImg.substring(15) : "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"}
             />
           );
         })}
